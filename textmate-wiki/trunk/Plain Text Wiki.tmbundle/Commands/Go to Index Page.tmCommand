@@ -6,8 +6,11 @@
 	<string>nop</string>
 	<key>command</key>
 	<string>#!/usr/bin/env ruby
+#
+# Revision: $Revision$ $LastChangedDate$
 
 require 'fileutils'
+require 'uri'
 
 unless ENV['TM_DIRECTORY']
 	puts "Save this file first."
@@ -22,8 +25,7 @@ unless FileTest.exists?(fn)
 	`osascript -e 'tell application "Dock" to activate'; osascript -e 'tell application "TextMate" to activate'`
 end
 
-`open "txmt://open/?url=file://#{fn.gsub(' ', '%20')}"`
-</string>
+`open "txmt://open/?url=file://#{URI.escape(fn, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))}"`</string>
 	<key>input</key>
 	<string>selection</string>
 	<key>keyEquivalent</key>

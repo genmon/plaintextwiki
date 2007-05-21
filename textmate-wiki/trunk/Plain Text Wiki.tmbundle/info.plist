@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>deleted</key>
+	<array>
+		<string>1DA9BB5F-E0F4-4F81-9F68-362BCF243C6F</string>
+	</array>
 	<key>name</key>
 	<string>Plain Text Wiki</string>
 	<key>ordering</key>
