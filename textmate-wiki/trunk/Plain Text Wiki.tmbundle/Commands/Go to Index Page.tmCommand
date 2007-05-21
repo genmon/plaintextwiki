@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>#!/usr/bin/env ruby
+
+require 'fileutils'
+
+unless ENV['TM_DIRECTORY']
+	puts "Save this file first."
+	exit 206
+end
+
+fn = ENV['TM_DIRECTORY'] + "/IndexPage.txt"
+
+unless FileTest.exists?(fn)
+	FileUtils.touch(fn)
+	# switch away from TextMate and back to refresh the project drawer
+	`osascript -e 'tell application "Dock" to activate'; osascript -e 'tell application "TextMate" to activate'`
+end
+
+`open "txmt://open/?url=file://#{fn.gsub(' ', '%20')}"`
+</string>
+	<key>input</key>
+	<string>selection</string>
+	<key>keyEquivalent</key>
+	<string>^I</string>
+	<key>name</key>
+	<string>Go to Index Page</string>
+	<key>output</key>
+	<string>discard</string>
+	<key>scope</key>
+	<string>text.plain, text.plain.wiki</string>
+	<key>uuid</key>
+	<string>C172A2DF-1A4F-4D98-9649-8072AE32A04A</string>
+</dict>
+</plist>

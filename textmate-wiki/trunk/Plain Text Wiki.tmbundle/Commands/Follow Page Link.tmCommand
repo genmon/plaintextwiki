@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>saveActiveFile</string>
+	<key>command</key>
+	<string>#!/usr/bin/env ruby
+
+require 'fileutils'
+
+fn = ENV['TM_DIRECTORY'] + "/" + ENV['TM_CURRENT_WORD'] + ".txt"
+
+unless FileTest.exists?(fn)
+	FileUtils.touch(fn)
+	# switch away from TextMate and back to refresh the project drawer
+	`osascript -e 'tell application "Dock" to activate'; osascript -e 'tell application "TextMate" to activate'`
+end
+
+`open "txmt://open/?url=file://#{fn.gsub(' ', '%20')}"`
+</string>
+	<key>input</key>
+	<string>selection</string>
+	<key>keyEquivalent</key>
+	<string></string>
+	<key>name</key>
+	<string>Follow Page Link</string>
+	<key>output</key>
+	<string>discard</string>
+	<key>scope</key>
+	<string>markup.other.pagename</string>
+	<key>tabTrigger</key>
+	<string>*</string>
+	<key>uuid</key>
+	<string>9E6456BA-0357-461E-B2CC-2C2FBCC515E9</string>
+</dict>
+</plist>
