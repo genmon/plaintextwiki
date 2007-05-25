@@ -5,6 +5,10 @@
 	<key>fileTypes</key>
 	<array>
 		<string>txt</string>
+		<string>markdown</string>
+		<string>mdown</string>
+		<string>markdn</string>
+		<string>md</string>
 	</array>
 	<key>name</key>
 	<string>Wiki</string>
@@ -24,7 +28,7 @@
 		</dict>
 	</array>
 	<key>scopeName</key>
-	<string>text.plain.wiki</string>
+	<string>text.html.markdown.wiki</string>
 	<key>uuid</key>
 	<string>F861513D-753A-4D79-8679-4EE3D034F5A8</string>
 </dict>

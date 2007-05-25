@@ -28,7 +28,7 @@ end
 
 `open "txmt://open/?url=file://#{URI.escape(fn, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))}"`</string>
 	<key>input</key>
-	<string>selection</string>
+	<string>none</string>
 	<key>keyEquivalent</key>
 	<string>^I</string>
 	<key>name</key>
@@ -36,7 +36,7 @@ end
 	<key>output</key>
 	<string>discard</string>
 	<key>scope</key>
-	<string>text.plain, text.plain.wiki</string>
+	<string>text.html.markdown.wiki</string>
 	<key>uuid</key>
 	<string>C172A2DF-1A4F-4D98-9649-8072AE32A04A</string>
 </dict>
