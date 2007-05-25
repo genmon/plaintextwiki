@@ -14,7 +14,13 @@
 			<key>match</key>
 			<string>[A-Z][a-z]+([A-Z][a-z]*)+</string>
 			<key>name</key>
-			<string>markup.other.pagename</string>
+			<string>markup.other.pagename.camelcase</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>\[\[.+\]\]</string>
+			<key>name</key>
+			<string>markup.other.pagename.delimited</string>
 		</dict>
 	</array>
 	<key>scopeName</key>
