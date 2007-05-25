@@ -14,6 +14,9 @@ require 'Find'
 require "#{ENV['TM_SUPPORT_PATH']}/lib/bluecloth.rb"
 require "#{ENV['TM_SUPPORT_PATH']}/lib/rubypants.rb"
 
+html_header = '&lt;html&gt;&lt;body&gt;'
+html_footer = '&lt;/body&gt;&lt;/html&gt;'
+
 def add_html_links(s)
 	linked = []
 	s.each_line do |line|
@@ -58,7 +61,9 @@ source_files.each do |source|
 	old_fn = File.split(source)[1]
 	new_fn = old_fn[0..(old_fn.length-File.extname(old_fn).length-1)] + '.html'
 	File.open( File.join(export_dir, new_fn), 'w' ) { |fh|
+		fh.puts(html_header)
 		fh.puts(html)
+		fh.puts(html_footer)
 	}
 end
 
