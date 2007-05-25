@@ -44,23 +44,32 @@ export_dir = `#{cocoadialog} fileselect --text "Choose a directory for wiki expo
 exit if export_dir.empty?
 
 # Gather a list of source files, from the top level only
-source_files = []
+files = [] # ([source, dest])
 extensions = ['.txt', '.markdown', '.mdown', '.markdn', '.md']
 Find.find(ENV['TM_DIRECTORY']) do |path|
 	next if path == ENV['TM_DIRECTORY']
 	File.prune if File.directory?(path)
 	next unless extensions.include?(File.extname(path))
-	source_files.push(path)
+
+	old_fn = File.split(path)[1]
+	new_fn = old_fn[0..(old_fn.length-File.extname(old_fn).length-1)] + '.html'
+	files.push([path, File.join(export_dir, new_fn)])
+end
+
+# Make sure there are no files in the way
+files.each do |source, dest|
+	if File.file?(dest)
+		puts "There's a file in the way! Please move it before exporting: #{File.split(dest)[1]}"
+		exit 206
+	end
 end
 
 # For each file, HTML-ify the links, convert to HTML using Markdown, and save
-source_files.each do |source|
+files.each do |source, dest|
 	s = add_html_links(open(source, 'r').read)
 	html = RubyPants.new(BlueCloth.new(s).to_html).to_html
 
-	old_fn = File.split(source)[1]
-	new_fn = old_fn[0..(old_fn.length-File.extname(old_fn).length-1)] + '.html'
-	File.open( File.join(export_dir, new_fn), 'w' ) { |fh|
+	File.open(dest, 'w') { |fh|
 		fh.puts(html_header)
 		fh.puts(html)
 		fh.puts(html_footer)
