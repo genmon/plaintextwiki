@@ -13,7 +13,17 @@
 require 'fileutils'
 require 'uri'
 
-fn = ENV['TM_DIRECTORY'] + "/" + ENV['TM_CURRENT_WORD'] + ".txt"
+if ENV['TM_SCOPE'].include?('markup.other.pagename.delimited')
+	idx = ENV['TM_LINE_INDEX'].to_i
+	pagename = (((ENV['TM_CURRENT_LINE'][0..idx-1] || "").reverse)[/^[^\[]*/] || "").reverse + ENV['TM_CURRENT_LINE'][idx..-1][/^[^\]]*/]
+	pagename = pagename.sub(/\[+/, "");
+	pagename = pagename.sub(/\]+/, "");
+	pagename.capitalize!
+else
+	pagename = ENV['TM_CURRENT_WORD']
+end
+
+fn = ENV['TM_DIRECTORY'] + "/" + pagename + ".txt"
 
 unless FileTest.exists?(fn)
 	FileUtils.touch(fn)
@@ -30,7 +40,7 @@ end
 	<key>name</key>
 	<string>Follow Page Link</string>
 	<key>output</key>
-	<string>discard</string>
+	<string>openAsNewDocument</string>
 	<key>scope</key>
 	<string>markup.other.pagename</string>
 	<key>tabTrigger</key>
