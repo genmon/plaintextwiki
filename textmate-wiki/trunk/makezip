@@ -1,0 +1,2 @@
+#!/bin/sh
+zip -r Plain-Text-Wiki Plain\ Text\ Wiki.tmbundle -x *.svn*

@@ -1,4 +1,5 @@
 Options +Indexes
 ReadmeName README.txt
+IndexIgnore makezip
 RewriteEngine on
 RewriteRule .tm(Command|Language|Preferences) - [T=text/plain]
