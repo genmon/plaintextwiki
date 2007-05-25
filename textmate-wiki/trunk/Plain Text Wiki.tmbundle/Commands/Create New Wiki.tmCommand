@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>#!/usr/bin/env ruby
+#
+# $Revision$
+# $LastChangedDate$
+
+# Ask the user for a new wiki directory, exiting if cancelled
+cocoadialog = "#{ENV['TM_SUPPORT_PATH']}/bin/CocoaDialog.app/Contents/MacOS/CocoaDialog"
+new_wiki_dir = `#{cocoadialog} fileselect --text "Choose a directory for your new wiki (IndexPage.txt will be created automatically)" --select-only-directories`.strip
+exit if new_wiki_dir.empty?
+
+# Exit if IndexPage.txt already exists
+index_page = File.join(new_wiki_dir, "IndexPage.txt")
+if File.file?(index_page)
+	puts "IndexPage.txt already exists here"
+	exit 206
+end
+
+# Create and populate the index page
+File.open(index_page, 'w') { |fh|
+	fh.puts("New wiki!")
+	fh.puts("")
+	fh.puts("Make new pages by naming them using CamelCase or [[like this]].")
+	fh.puts("")
+	fh.puts("To follow a link, put your cursor over an underlined page name and hit Enter (not Return).")
+}
+
+# Open this wiki in a project window
+`open -a TextMate "#{new_wiki_dir}"`
+
+</string>
+	<key>input</key>
+	<string>selection</string>
+	<key>name</key>
+	<string>Create New Wiki</string>
+	<key>output</key>
+	<string>replaceSelectedText</string>
+	<key>uuid</key>
+	<string>3ED5069A-0CCF-4AE6-A85B-CD3CA6041D4E</string>
+</dict>
+</plist>

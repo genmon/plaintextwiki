@@ -34,13 +34,13 @@ end
 `open "txmt://open/?url=file://#{URI.escape(fn, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))}"`
 </string>
 	<key>input</key>
-	<string>selection</string>
+	<string>none</string>
 	<key>keyEquivalent</key>
 	<string></string>
 	<key>name</key>
 	<string>Follow Page Link</string>
 	<key>output</key>
-	<string>openAsNewDocument</string>
+	<string>discard</string>
 	<key>scope</key>
 	<string>markup.other.pagename</string>
 	<key>tabTrigger</key>
