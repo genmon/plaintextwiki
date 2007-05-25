@@ -1,0 +1,4 @@
+Options +Indexes
+ReadmeName README.txt
+RewriteEngine on
+RewriteRule .tm(Command|Language|Preferences) - [T=text/plain]
