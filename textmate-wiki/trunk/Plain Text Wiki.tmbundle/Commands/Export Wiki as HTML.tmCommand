@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>beforeRunningCommand</key>
-	<string>nop</string>
+	<string>saveModifiedFiles</string>
 	<key>command</key>
 	<string>#!/usr/bin/env ruby
 #
@@ -11,15 +11,15 @@
 # $LastChangedDate$
 
 require 'Find'
-require "#{ENV['TM_SUPPORT_PATH']}/lib/bluecloth.rb"
+require "#{ENV['TM_SUPPORT_PATH']}/lib/redcloth.rb"
 require "#{ENV['TM_SUPPORT_PATH']}/lib/rubypants.rb"
 
 html_header = '&lt;html&gt;&lt;body&gt;'
 html_footer = '&lt;/body&gt;&lt;/html&gt;'
 
-def add_html_links(s)
-	linked = []
-	s.each_line do |line|
+public
+def with_html_links
+	split("\n").collect { |line|
 		# markup.other.pagename.camelcase
 		line.gsub!(/\b([A-Z][a-z]+([A-Z][a-z]*)+)\b/, '&lt;a href="\1.html"&gt;\1&lt;/a&gt;')
 		# markup.other.pagename.delimited
@@ -27,9 +27,8 @@ def add_html_links(s)
 			pagename = $1.capitalize
 			"&lt;a href=\"#{pagename}.html\"&gt;#{pagename}&lt;/a&gt;"
 		}
-		linked.push(line)
-	end
-	linked.join("\n")
+		line
+	}.join("\n")
 end
 
 # Make sure this file is saved in a directory
@@ -66,8 +65,8 @@ end
 
 # For each file, HTML-ify the links, convert to HTML using Markdown, and save
 files.each do |source, dest|
-	s = add_html_links(open(source, 'r').read)
-	html = RubyPants.new(BlueCloth.new(s).to_html).to_html
+	s = open(source, 'r').read.with_html_links
+	html = RubyPants.new(RedCloth.new(s).to_html(:markdown, :textile)).to_html
 
 	File.open(dest, 'w') { |fh|
 		fh.puts(html_header)
@@ -83,9 +82,11 @@ front = File.join(export_dir, "IndexPage.html")
 	<key>input</key>
 	<string>none</string>
 	<key>name</key>
-	<string>Export Wiki as HTML</string>
+	<string>Export Wiki as HTML…</string>
 	<key>output</key>
 	<string>discard</string>
+	<key>scope</key>
+	<string>text.html.markdown.wiki</string>
 	<key>uuid</key>
 	<string>FED9A9F7-1158-45DA-953B-543F1E43EA9E</string>
 </dict>
