@@ -32,12 +32,23 @@ Usage
 
 Return to the index page at any time: Type shift+ctrl+i
 
-Plain Text Wiki understands Markdown: 
+
+Export as HTML
+--------------
+
+Choose 'Export Wiki as HTML' from the Plain Text Wiki commands menu. You will 
+be prompted for a directory where the Web pages will be saved (please make 
+sure it's empty).
+
+For converting text to HTML, Plain Text Wiki understands Markdown: 
 http://daringfireball.net/projects/markdown/syntax
 
-If the wiki is written in Markdown, choose 'Export Wiki as HTML' from the 
-Plain Text Wiki commands menu. You will be prompted for a directory where the 
-Web pages will be saved (please make sure it's empty).
+To customise the HTML of the wiki, add wiki-styles.css to the project 
+directory--it'll be copied to the export directory and included.
+
+For more control, add wiki-header.html and wiki-footer.html to the project 
+directory. Include the string "%s" in wiki-header.html to have that replaced 
+with the page title on export.
 
 
 Bugs and issues
