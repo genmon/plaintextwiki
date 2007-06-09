@@ -6,6 +6,20 @@
 	<array>
 		<string>1DA9BB5F-E0F4-4F81-9F68-362BCF243C6F</string>
 	</array>
+	<key>mainMenu</key>
+	<dict>
+		<key>items</key>
+		<array>
+			<string>9E6456BA-0357-461E-B2CC-2C2FBCC515E9</string>
+			<string>C172A2DF-1A4F-4D98-9649-8072AE32A04A</string>
+			<string>CB5ACF76-5D2D-4696-BE9A-525D2EF8E749</string>
+			<string>------------------------------------</string>
+			<string>FED9A9F7-1158-45DA-953B-543F1E43EA9E</string>
+			<string>3ED5069A-0CCF-4AE6-A85B-CD3CA6041D4E</string>
+		</array>
+		<key>submenus</key>
+		<dict/>
+	</dict>
 	<key>name</key>
 	<string>Plain Text Wiki</string>
 	<key>ordering</key>

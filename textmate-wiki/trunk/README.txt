@@ -32,6 +32,8 @@ Usage
 
 Return to the index page at any time: Type shift+ctrl+i
 
+Insert a list of pages by typing 'pagelist' and hitting tab.
+
 
 Export as HTML
 --------------
@@ -56,13 +58,24 @@ Bugs and issues
 
 Please let me know about any bugs. Patches are welcome!
 
-Advice welcome on:
+Issues:
 
-* How to include the text.html.markdown language grammar while still keeping 
-  the underlined wiki page names
-* How to make sure the shell and URI escaping really, *really* works
-* Better Ruby idiom (I'm new to the language)
-* Better TextMate bundle behaviour (ditto)
+* The text.html.markdown language grammar, and grammar to underline http-style 
+  URLs, should be included
+* Bundle needs to adhere to http://macromates.com/wiki/Bundles/StyleGuide
+* Grammar binds to a number of file extensions, but exports only '.txt'
+
+
+Changes
+-------
+
+2007-06-09:
+
+* Added 'Insert Page List'
+* 'Follow Page Link' now ignores case when looking for a text file to open
+* Export now looks for wiki-styles.css, wiki-header.html and wiki-footer.html
+* Various bugs fixed in way Export adds HTML links
+* Export prompts to replace files in the export directory
 
 
 Miscellaneous
@@ -70,4 +83,3 @@ Miscellaneous
 
 More background to Plain Text Wiki:
 http://interconnected.org/home/2007/05/20/plain_text_wiki
-
