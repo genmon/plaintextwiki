@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>#!/usr/bin/env ruby
+require "#{ENV['TM_BUNDLE_SUPPORT']}/lib/wiki.rb"
+puts PlainTextWiki.new(ENV['TM_DIRECTORY']).linked_page_list
+</string>
+	<key>input</key>
+	<string>none</string>
+	<key>name</key>
+	<string>Insert Page List</string>
+	<key>output</key>
+	<string>replaceSelectedText</string>
+	<key>scope</key>
+	<string>text.html.markdown.wiki</string>
+	<key>tabTrigger</key>
+	<string>pagelist</string>
+	<key>uuid</key>
+	<string>CB5ACF76-5D2D-4696-BE9A-525D2EF8E749</string>
+</dict>
+</plist>
