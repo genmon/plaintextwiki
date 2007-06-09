@@ -8,6 +8,8 @@ require 'FileUtils'
 $: << "#{ENV['TM_SUPPORT_PATH']}/lib" if ENV.has_key?('TM_SUPPORT_PATH')
 
 class PlainTextWiki
+    # Default extension
+    EXT = ".txt"
     
     # set by the initializer, passed in
     attr_reader :dir
@@ -23,6 +25,7 @@ class PlainTextWiki
     	end
         
         @dir = dir
+        @pages = nil
     end
     
     def follow_link
@@ -44,7 +47,7 @@ class PlainTextWiki
     end
 
     def go_to(pagename)
-        fn = pagename + ".txt"
+        fn = pagename + EXT
         
         require 'uri'
 
@@ -69,7 +72,7 @@ class PlainTextWiki
     
     def export_as_html
         require 'Find'
-        require "#{ENV['TM_SUPPORT_PATH']}/lib/redcloth.rb"
+        require "#{ENV['TM_SUPPORT_PATH']}/lib/bluecloth.rb"
         require "#{ENV['TM_SUPPORT_PATH']}/lib/rubypants.rb"
 
         # Ask the user for an export directory, exiting if cancelled
@@ -92,17 +95,28 @@ class PlainTextWiki
         end
 
         # Make sure there are no files in the way
+        files_in_the_way = false
         files.each do |source, dest, title|
         	if File.file?(dest)
-        		puts "There's a file in the way! Please move it before exporting: #{File.split(dest)[1]}"
-        		exit 206
-        	end
+        	    files_in_the_way = true
+       	    end
+        end
+        if File.file?("#{export_dir}/wiki-styles.css")
+            files_in_the_way = true
+        end
+        
+        if files_in_the_way
+            res = `#{cocoadialog} msgbox --text "Export will replace files" --icon "x" --informative-text "There are files in the way in the export directory. They will be lost if you continue." --button1 "Cancel Export" --button2 "Replace All"`
+            if res == 1
+                puts "Cancelled Export Wiki as HTML"
+                exit 206
+            end
         end
 
         # For each file, HTML-ify the links, convert to HTML using Markdown, and save
         files.each do |source, dest, title|
         	s = with_html_links(open(source, 'r').read)
-        	html = RubyPants.new(RedCloth.new(s).to_html(:markdown, :textile)).to_html
+        	html = RubyPants.new(BlueCloth.new(s).to_html).to_html
 
         	File.open(dest, 'w') { |fh|
         		fh.puts(wiki_header % title)
@@ -110,6 +124,9 @@ class PlainTextWiki
         		fh.puts(wiki_footer)
         	}
         end
+
+        # Copy the stylesheet over
+        FileUtils.copy("#{wiki_styles_path}", "#{export_dir}/wiki-styles.css")
 
         # Open the exported wiki in the default HTML viewer
         front = File.join(export_dir, "IndexPage.html")
@@ -119,6 +136,20 @@ class PlainTextWiki
     # protected instance methods
     
     protected
+    
+    def pages
+        @pages ||= load_pages
+        @pages
+    end
+    
+    def load_pages
+        extensions = [EXT]
+        all_files = Dir.entries(dir)
+        all_files.reject! { |fn| File.directory?("#{dir}/#{fn}") }
+        all_files.reject! { |fn| ! extensions.include?(File.extname(fn)) }
+        all_files.map! { |fn| fn[0..(fn.length-File.extname(fn).length-1)] }
+        all_files.sort
+    end
     
     def templates_dir
         "#{ENV['TM_BUNDLE_SUPPORT']}/templates"
@@ -133,18 +164,29 @@ class PlainTextWiki
         d = File.file?("#{dir}/wiki-footer.html") ? dir : templates_dir
         open("#{d}/wiki-footer.html", "r").read
     end
+    
+    def wiki_styles_path
+        d = File.file?("#{dir}/wiki-styles.css") ? dir : templates_dir
+        "#{d}/wiki-styles.css"
+    end
  
     def with_html_links(s)
-    	s.split("\n").collect { |line|
-    		# markup.other.pagename.camelcase
-    		line.gsub!(/\b([A-Z][a-z]+([A-Z][a-z]*)+)\b/, '<a href="\1.html">\1</a>')
-    		# markup.other.pagename.delimited
-    		line.gsub!(/\[\[(.+)\]\]/) { |m|
-    			pagename = $1.capitalize
-    			"<a href=\"#{pagename}.html\">#{pagename}</a>"
-    		}
-    		line
-    	}.join("\n")
+        # This match recognises HTML links, and delimited then camelcase
+        # pagenames. Each is treated differently
+        # $1: HTML capture
+        # $2: Delimited capture ($3 is the page name)
+        # $4: Camelcase capture
+        s.gsub(/(<a .+<\/a>)|(\[\[(.+)\]\])|(\b([A-Z][a-z]+([A-Z][a-z]*)+)\b)/) { |m|
+            if $1
+                $1
+            else
+                pagename = $2 ? $2.tr("[]", "").capitalize : $4
+                if (!pages.include?(pagename)) and (pages.map { |p| p.downcase }.include? pagename.downcase)
+                    pagename = pages.select { |p| p.downcase == pagename.downcase }.first
+                end 
+                "<a href=\"#{pagename}.html\">#{pagename}</a>"
+            end
+        }
     end
 
     # public class methods
