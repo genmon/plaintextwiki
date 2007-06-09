@@ -21,10 +21,16 @@
 			<string>markup.other.pagename.camelcase</string>
 		</dict>
 		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>markup.other.pagename.delimited</string>
+				</dict>
+			</dict>
 			<key>match</key>
-			<string>\[\[.+\]\]</string>
-			<key>name</key>
-			<string>markup.other.pagename.delimited</string>
+			<string>\[\[(.+)\]\]</string>
 		</dict>
 	</array>
 	<key>scopeName</key>

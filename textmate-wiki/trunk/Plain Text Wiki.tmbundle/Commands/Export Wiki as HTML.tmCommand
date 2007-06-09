@@ -6,79 +6,8 @@
 	<string>saveModifiedFiles</string>
 	<key>command</key>
 	<string>#!/usr/bin/env ruby
-#
-# $Revision$
-# $LastChangedDate$
-
-require 'Find'
-require "#{ENV['TM_SUPPORT_PATH']}/lib/redcloth.rb"
-require "#{ENV['TM_SUPPORT_PATH']}/lib/rubypants.rb"
-
-html_header = '&lt;html&gt;&lt;body&gt;'
-html_footer = '&lt;/body&gt;&lt;/html&gt;'
-
-public
-def with_html_links
-	split("\n").collect { |line|
-		# markup.other.pagename.camelcase
-		line.gsub!(/\b([A-Z][a-z]+([A-Z][a-z]*)+)\b/, '&lt;a href="\1.html"&gt;\1&lt;/a&gt;')
-		# markup.other.pagename.delimited
-		line.gsub!(/\[\[(.+)\]\]/) { |m|
-			pagename = $1.capitalize
-			"&lt;a href=\"#{pagename}.html\"&gt;#{pagename}&lt;/a&gt;"
-		}
-		line
-	}.join("\n")
-end
-
-# Make sure this file is saved in a directory
-unless ENV['TM_DIRECTORY']
-	puts "Save this file first."
-	exit 206
-end
-
-# Ask the user for an export directory, exiting if cancelled
-cocoadialog = "#{ENV['TM_SUPPORT_PATH']}/bin/CocoaDialog.app/Contents/MacOS/CocoaDialog"
-export_dir = `#{cocoadialog} fileselect --text "Choose a directory for wiki export" --select-only-directories`.strip
-exit if export_dir.empty?
-
-# Gather a list of source files, from the top level only
-files = [] # ([source, dest])
-extensions = ['.txt', '.markdown', '.mdown', '.markdn', '.md']
-Find.find(ENV['TM_DIRECTORY']) do |path|
-	next if path == ENV['TM_DIRECTORY']
-	File.prune if File.directory?(path)
-	next unless extensions.include?(File.extname(path))
-
-	old_fn = File.split(path)[1]
-	new_fn = old_fn[0..(old_fn.length-File.extname(old_fn).length-1)] + '.html'
-	files.push([path, File.join(export_dir, new_fn)])
-end
-
-# Make sure there are no files in the way
-files.each do |source, dest|
-	if File.file?(dest)
-		puts "There's a file in the way! Please move it before exporting: #{File.split(dest)[1]}"
-		exit 206
-	end
-end
-
-# For each file, HTML-ify the links, convert to HTML using Markdown, and save
-files.each do |source, dest|
-	s = open(source, 'r').read.with_html_links
-	html = RubyPants.new(RedCloth.new(s).to_html(:markdown, :textile)).to_html
-
-	File.open(dest, 'w') { |fh|
-		fh.puts(html_header)
-		fh.puts(html)
-		fh.puts(html_footer)
-	}
-end
-
-# Open the exported wiki in the default HTML viewer
-front = File.join(export_dir, "IndexPage.html")
-`open #{front}`
-</string>
+require "#{ENV['TM_BUNDLE_SUPPORT']}/lib/wiki.rb"
+PlainTextWiki.new(ENV['TM_DIRECTORY']).export_as_html</string>
 	<key>input</key>
 	<string>none</string>
 	<key>name</key>

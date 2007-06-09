@@ -3,30 +3,12 @@
 <plist version="1.0">
 <dict>
 	<key>beforeRunningCommand</key>
-	<string>nop</string>
+	<string>saveActiveFile</string>
 	<key>command</key>
 	<string>#!/usr/bin/env ruby
-#
-# $Revision$
-# $LastChangedDate$
-
-require 'fileutils'
-require 'uri'
-
-unless ENV['TM_DIRECTORY']
-	puts "Save this file first."
-	exit 206
-end
-
-fn = ENV['TM_DIRECTORY'] + "/IndexPage.txt"
-
-unless FileTest.exists?(fn)
-	FileUtils.touch(fn)
-	# switch away from TextMate and back to refresh the project drawer
-	`osascript -e 'tell application "Dock" to activate'; osascript -e 'tell application "TextMate" to activate'`
-end
-
-`open "txmt://open/?url=file://#{URI.escape(fn, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))}"`</string>
+require "#{ENV['TM_BUNDLE_SUPPORT']}/lib/wiki.rb"
+PlainTextWiki.new(ENV['TM_DIRECTORY']).go_to_index_page
+</string>
 	<key>input</key>
 	<string>none</string>
 	<key>keyEquivalent</key>
