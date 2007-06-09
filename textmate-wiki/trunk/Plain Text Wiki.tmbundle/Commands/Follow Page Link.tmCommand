@@ -6,32 +6,8 @@
 	<string>saveActiveFile</string>
 	<key>command</key>
 	<string>#!/usr/bin/env ruby
-#
-# $Revision$
-# $LastChangedDate$
-
-require 'fileutils'
-require 'uri'
-
-if ENV['TM_SCOPE'].include?('markup.other.pagename.delimited')
-	idx = ENV['TM_LINE_INDEX'].to_i
-	pagename = (((ENV['TM_CURRENT_LINE'][0..idx-1] || "").reverse)[/^[^\[]*/] || "").reverse + ENV['TM_CURRENT_LINE'][idx..-1][/^[^\]]*/]
-	pagename = pagename.sub(/\[+/, "");
-	pagename = pagename.sub(/\]+/, "");
-	pagename.capitalize!
-else
-	pagename = ENV['TM_CURRENT_WORD']
-end
-
-fn = ENV['TM_DIRECTORY'] + "/" + pagename + ".txt"
-
-unless FileTest.exists?(fn)
-	FileUtils.touch(fn)
-	# switch away from TextMate and back to refresh the project drawer
-	`osascript -e 'tell application "Dock" to activate'; osascript -e 'tell application "TextMate" to activate'`
-end
-
-`open "txmt://open/?url=file://#{URI.escape(fn, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))}"`
+require "#{ENV['TM_BUNDLE_SUPPORT']}/lib/wiki.rb"
+PlainTextWiki.new(ENV['TM_DIRECTORY']).follow_link
 </string>
 	<key>input</key>
 	<string>none</string>

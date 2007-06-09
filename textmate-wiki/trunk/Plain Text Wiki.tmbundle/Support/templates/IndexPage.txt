@@ -1,0 +1,6 @@
+New wiki!
+
+Make new pages by naming them using CamelCase or [[like this]].
+
+To follow a link, put your cursor over an underlined page name and hit Enter
+(not Return).
