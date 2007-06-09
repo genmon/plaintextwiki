@@ -6,8 +6,6 @@
 require 'FileUtils'
 require 'uri'
 
-$: << "#{ENV['TM_SUPPORT_PATH']}/lib" if ENV.has_key?('TM_SUPPORT_PATH')
-
 class PlainTextWiki
     # Default extension for page creation
     EXT = ".txt"
