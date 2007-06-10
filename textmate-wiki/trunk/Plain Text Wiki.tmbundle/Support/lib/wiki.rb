@@ -121,6 +121,10 @@ class PlainTextWiki
         `open #{export_dir}/IndexPage#{export_ext}`
     end
    
+    def templates_dir
+        "#{ENV['TM_BUNDLE_SUPPORT']}/templates"
+    end
+
     # protected instance methods
     
     protected
@@ -136,10 +140,6 @@ class PlainTextWiki
         all_files.reject! { |fn| File.extname(fn) != EXT }
         all_files.map! { |fn| fn[0..(fn.length-File.extname(fn).length-1)] }
         all_files.sort
-    end
-    
-    def templates_dir
-        "#{ENV['TM_BUNDLE_SUPPORT']}/templates"
     end
     
     def wiki_header

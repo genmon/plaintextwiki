@@ -69,6 +69,10 @@ Issues:
 Changes
 -------
 
+2007-06-10:
+
+* Fixed Create New Wiki command (which was not working)
+
 2007-06-09:
 
 * Added 'Insert Page List'
