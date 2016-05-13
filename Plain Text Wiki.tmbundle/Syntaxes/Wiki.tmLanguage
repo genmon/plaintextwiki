@@ -33,6 +33,8 @@
 			<string>\[\[(.+)\]\]</string>
 		</dict>
 	</array>
+	<key>injectionSelector</key>
+	<string>L: text</string>
 	<key>scopeName</key>
 	<string>text.html.markdown.wiki</string>
 	<key>uuid</key>
