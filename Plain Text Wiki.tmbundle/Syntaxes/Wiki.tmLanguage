@@ -32,11 +32,9 @@
 			<key>match</key>
 			<string>\[\[(.+)\]\]</string>
 		</dict>
-		<dict>
-			<key>include</key>
-			<string>text.html.markdown</string>
-		</dict>
 	</array>
+	<key>injectionSelector</key>
+	<string>L: text</string>
 	<key>scopeName</key>
 	<string>text.html.markdown.wiki</string>
 	<key>uuid</key>
